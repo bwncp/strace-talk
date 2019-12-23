@@ -11,6 +11,9 @@ jobs:
     - uses: actions/checkout@v1
     - name: Run a one-line script
       run: echo Hello, world!
+    - name: Install dependencies
+      run: |
+        sudo apt install latexmk
     - name: Run a multi-line script
       run: |
         cd paper; latexmk
