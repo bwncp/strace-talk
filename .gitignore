@@ -5,3 +5,4 @@ strace.pdf
 *.synctex.*
 *.log
 *.fdb_latexmk
+__latexindent*.tex
