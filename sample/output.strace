@@ -1,0 +1,14 @@
+
+
+...
+
+openat(AT_FDCWD, "somefile", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=6, ...}) = 0
+ioctl(3, TCGETS, 0x7ffd33a6ed10)        = -1 ENOTTY
+lseek(3, 0, SEEK_CUR)                   = 0
+
+read(3, "12345\n", 4096)                = 6
+
+close(3)                                = 0
+
+write(1, "5 bytes read\n", 13)          = 13
