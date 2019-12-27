@@ -35,8 +35,8 @@
 
       Dieser Vortrag ist für Einsteiger gedacht und beginnt daher mit etwas Theorie: Wie
       interagieren Programme mit dem Betriebssystem? Danach wird die Bedienung von \strace{}
-      anhand eines einfachen Beispiels erläutert. Zum Schluss folgen verschiedene Nützliche
-      Optionen von \strace{} mit ihren Einsatzszenarien.
+      anhand eines einfachen Beispiels erläutert. Zum Schluss folgen verschiedene nützliche
+      Optionen mit ihren Einsatzszenarien.
     \end{abstract}
 
     \vspace{1cm}
@@ -45,7 +45,7 @@
 \makeatother
 
 
-\section{Systemaufrufe}
+\section{Grundlagen}
 
 Bevor wir uns damit beschäftigen, wie man \strace{} verwendet, benötigen wir etwas
 Hintergrundwissen, um zu verstehen, was uns das Tool überhaupt anzeigt: Nämlich die sogenannten
@@ -55,30 +55,33 @@ Hintergrundwissen, um zu verstehen, was uns das Tool überhaupt anzeigt: Nämlic
 
 Zunächst müssen wir uns vergegenwärtigen, dass ein "`moderner"'\footnote{Also letztlich alles, was
 nach den 1990er Jahren gebaut wurde und etwas größer ist, also kein einfacher Mikrocontroller in
-einer Waschmaschine.} Prozessor zwei Modi besitzt: Den \emph{User-Mode} und den \emph{Kernel-Mode}.
+einer Waschmaschine.} Prozessor (mindestens) zwei Modi besitzt: Den \emph{User-Mode} und den
+\emph{Kernel-Mode}.
 
 \begin{description}
   \item[Kernel-Mode]
     Arbeitet die CPU im \emph{Kernel-Mode,} so ist jeder beliebige Befehl zur Ausführung 
-    zugelassen. Es kann auf sämtliche Speicherbereiche und damit auch auf sämtliche Hardware 
+    zugelassen. Sie kann auf sämtliche Speicherbereiche und damit auch auf sämtliche Hardware 
     zugreifen. Je nach Architektur nennt man diesen Modus auch \emph{Supervisor-Modus} oder
-    \emph{privilegierten Modus}.
+    allgemein auch \emph{privilegierten Modus}.
 
     Unter Linux nutzt nur der \emph{Kernel} (Betriebssystemkern) diesen Modus.
 
   \item[User-Mode] Arbeitet die CPU im User-Mode, so ist nur ein eingeschränkter Befehlssatz zur
      Ausführung zugelassen. Es sind also nicht alle Befehle erlaubt, ebenso kann nicht auf alle Speicherbereiche und auch nicht direkt auf Hardware zugegriffen werden. 
 
-     In diesem Modus werden Programme ausgeführt, auch jene, die mit Administrator-Rechten laufen.
+     In diesem Modus werden normale Programme ausgeführt, auch jene, die mit Administrator-Rechten 
+     laufen.
 \end{description}
 
 \subsection{Systemaufrufe}
 
 An dieser Stelle kommen nun die Systemaufrufe ins Spiel: Immer wenn ein Programm (im User-Mode)
-läuft und Dienste des Betriebssystems benötigt, setzt es einen Systemaufruf ab, um diesen Dienst
-in Anspruch zu nehmen.
+läuft und Dienste des Betriebssystems benötigt, die nur im Kernel-Mode ausgeführt werden können,
+setzt es einen Systemaufruf ab, um diesen Dienst in Anspruch zu nehmen. Natürlich prüft der Kernel
+vor der Ausführung, ob der Prozess die entsprechende Berechtigung besitzt.
 
-Es gibt Systemaufrufe für verschiedene Dinge, sie lassen sich in verschiedenen Gruppen
+Es gibt Systemaufrufe für verschiedene Dinge, sie lassen sich in Gruppen
 zusammenfassen:
 
 \begin{itemize}
@@ -86,7 +89,7 @@ zusammenfassen:
     Verzeichnissen sowie Lesen und Schreiben von Daten. Abfragen und Ändern von Metadaten.
   \item \textbf{Prozessverwaltung:} Erzeugen und Terminieren von Prozessen sowie Abfrage deren 
    Status.
-  \item \textbf{Interprozesskommunikation (IPC):} Synchronisation und Kommunikation mit anderen Tasks, z.\,B. über Shared Memory, FIFOs, Mutexe.
+  \item \textbf{Interprozesskommunikation (IPC):} Synchronisation und Kommunikation mit anderen Tasks, z.\,B. über Shared Memory, FIFOs oder Semaphoren.
   \item \textbf{Netzwerkkommunikation:} Senden und Empfangen von Daten über Netzwerke mit sog.
    \emph{Sockets,} normalerweise über TCP/IP aber auch über andere Protokolle wie Bluetooth.
   \item \textbf{Sonstiges:} Darüber hinaus gibt es noch eine Reihe von Systemaufrufen, die sich
@@ -96,7 +99,9 @@ zusammenfassen:
 Die Systemaufrufe sind relativ einfach gehalten. Die meisten komplexen Aufgaben setzen sich aus
 einfachen Systemaufrufen zusammen, die dann mit Hilfe von Programmierschnittstellen (APIs\footnote{
 engl. \emph{Application Programming Interface}}) dem Entwickler mit Bibliotheken zugänglich gemacht
-werden.
+werden. Zum Beispiel gibt es keinen Systemaufruf für das Anzeigen eines Fensters: Stattdessen
+kommuniziert die Applikation mit dem \emph{X-Server} über ein festgelegtes Protokoll und verwendet
+dafür fertige Programmbibliotheken.
 
 \minisec{Dateioperationen}
 
@@ -109,10 +114,11 @@ Um einen Text aus einer Datei zu lesen, kommuniziert ein Programm mit dem Betrie
 folgendermaßen:
 
 \begin{enumerate}
-  \item \texttt{open()} öffnet die Datei und gibt einen sog. \emph{Dateideskriptor} zurück. Hierbei
-   handelt es sich um eine Zahl, die innerhalb eines Prozesses eindeutig ist und die geöffnete
-   Datei referenziert. Unter Unix werden Dateideskriptoren auch für viele andere Objekte verwendet, 
-   so zum Beispiel für einen \emph{Socket,} einen abstrakten Kanal zur Kommunikation in Netzwerken.
+  \item \texttt{open()} öffnet die Datei und gibt einen sog. \emph{Dateideskriptor} (engl.
+   \emph{file descriptor)} zurück. Hierbei handelt es sich um einen Zahl, die innerhalb eines 
+   Prozesses eindeutig ist und die geöffnete Datei referenziert. Unter Unix werden 
+   Dateideskriptoren auch für viele andere Objekte verwendet, so zum Beispiel für einen
+   \emph{Socket,} einen abstrakten Kanal zur Kommunikation in Netzwerken.
 
    Als Parameter erhält der Systemaufruf neben dem \emph{Pfad} der Datei auch den 
    \emph{Zugriffsmodus}, also ob die Datei gelesen oder geschrieben werden soll und ob ggf. die 
