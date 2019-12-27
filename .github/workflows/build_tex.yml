@@ -18,7 +18,7 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
     - name: Upload the paper
-    - uses: actions/upload-artifact@v1
-    - with:
+      uses: actions/upload-artifact@v1
+      with:
         name: paper
         path: paper/strace.pdf
