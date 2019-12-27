@@ -1,4 +1,5 @@
 \documentclass[10pt,DIV=14,twocolumn,ngerman,parskip=half]{scrartcl}
+\usepackage{abstract}
 \usepackage{babel}
 \usepackage[tt=false]{libertine}
 \usepackage[svgnames]{xcolor}
@@ -19,15 +20,113 @@
 \author{\href{mailto:bernhard.walle@ncp-e.com}{Bernhard Walle},
         \href{https://www.ncp-e.com}{NCP engineering GmbH}}
 
-\maketitle
+\newcommand{\strace}{\emph{strace}}
 
-\begin{abstract}
-    Das Tool \emph{strace} gehört zu den Urgesteinen der Tracing"=Tools unter Linux und anderen
-    unixoiden Betriebssystemen. Es ist entweder bereits installiert oder lässt sich über die
-    Paketverwaltung leicht nachinstallieren. Es eignet sich 
-\end{abstract}
+\makeatletter
+\twocolumn[
+  \begin{@twocolumnfalse} 
+    \maketitle 
+    \begin{abstract} 
+      Das Tool \strace{} gehört zu den Urgesteinen der Tracing"=Tools unter Linux und anderen
+      unixoiden Betriebssystemen. Es ist entweder bereits installiert oder lässt sich über die
+      Paketverwaltung leicht installieren. Mit Hilfe von \strace{} lässt sich die Interaktion
+      eines beliebigen Programms mit dem Betriebssystem untersuchen: Es zeigt die sogenannten
+      \emph{Systemaufrufe} mit ihren Argumente und Rückgabewerten an.
+
+      Dieser Vortrag ist für Einsteiger gedacht und beginnt daher mit etwas Theorie: Wie
+      interagieren Programme mit dem Betriebssystem? Danach wird die Bedienung von \strace{}
+      anhand eines einfachen Beispiels erläutert. Zum Schluss folgen verschiedene Nützliche
+      Optionen von \strace{} mit ihren Einsatzszenarien.
+    \end{abstract}
+
+    \vspace{1cm}
+  \end{@twocolumnfalse}
+]
+\makeatother
 
 
+\section{Systemaufrufe}
+
+Bevor wir uns damit beschäftigen, wie man \strace{} verwendet, benötigen wir etwas
+Hintergrundwissen, um zu verstehen, was uns das Tool überhaupt anzeigt: Nämlich die sogenannten
+\emph{Systemaufrufe} oder engl. \emph{system calls}.
+
+\subsection{User-Mode und Kernel-Mode}
+
+Zunächst müssen wir uns vergegenwärtigen, dass ein "`moderner"'\footnote{Also letztlich alles, was
+nach den 1990er Jahren gebaut wurde und etwas größer ist, also kein einfacher Mikrocontroller in
+einer Waschmaschine.} Prozessor zwei Modi besitzt: Den \emph{User-Mode} und den \emph{Kernel-Mode}.
+
+\begin{description}
+  \item[Kernel-Mode]
+    Arbeitet die CPU im \emph{Kernel-Mode,} so ist jeder beliebige Befehl zur Ausführung 
+    zugelassen. Es kann auf sämtliche Speicherbereiche und damit auch auf sämtliche Hardware 
+    zugreifen. Je nach Architektur nennt man diesen Modus auch \emph{Supervisor-Modus} oder
+    \emph{privilegierten Modus}.
+
+    Unter Linux nutzt nur der \emph{Kernel} (Betriebssystemkern) diesen Modus.
+
+  \item[User-Mode] Arbeitet die CPU im User-Mode, so ist nur ein eingeschränkter Befehlssatz zur
+     Ausführung zugelassen. Es sind also nicht alle Befehle erlaubt, ebenso kann nicht auf alle Speicherbereiche und auch nicht direkt auf Hardware zugegriffen werden. 
+
+     In diesem Modus werden Programme ausgeführt, auch jene, die mit Administrator-Rechten laufen.
+\end{description}
+
+\subsection{Systemaufrufe}
+
+An dieser Stelle kommen nun die Systemaufrufe ins Spiel: Immer wenn ein Programm (im User-Mode)
+läuft und Dienste des Betriebssystems benötigt, setzt es einen Systemaufruf ab, um diesen Dienst
+in Anspruch zu nehmen.
+
+Es gibt Systemaufrufe für verschiedene Dinge, sie lassen sich in verschiedenen Gruppen
+zusammenfassen:
+
+\begin{itemize}
+  \item \textbf{Datei u. Verzeichnisverwaltung:} Erstellen, Auflisten, Löschen von Dateien und 
+    Verzeichnissen sowie Lesen und Schreiben von Daten. Abfragen und Ändern von Metadaten.
+  \item \textbf{Prozessverwaltung:} Erzeugen und Terminieren von Prozessen sowie Abfrage deren 
+   Status.
+  \item \textbf{Interprozesskommunikation (IPC):} Synchronisation und Kommunikation mit anderen Tasks, z.\,B. über Shared Memory, FIFOs, Mutexe.
+  \item \textbf{Netzwerkkommunikation:} Senden und Empfangen von Daten über Netzwerke mit sog.
+   \emph{Sockets,} normalerweise über TCP/IP aber auch über andere Protokolle wie Bluetooth.
+  \item \textbf{Sonstiges:} Darüber hinaus gibt es noch eine Reihe von Systemaufrufen, die sich
+    nicht in die Gruppen einfügen, bspw. die Abfrage und das Setzen der Systemzeit.
+\end{itemize}
+
+Die Systemaufrufe sind relativ einfach gehalten. Die meisten komplexen Aufgaben setzen sich aus
+einfachen Systemaufrufen zusammen, die dann mit Hilfe von Programmierschnittstellen (APIs\footnote{
+engl. \emph{Application Programming Interface}}) dem Entwickler mit Bibliotheken zugänglich gemacht
+werden.
+
+\minisec{Dateioperationen}
+
+An dieser Stelle möchte ich einige Systemaufrufe zum Arbeiten mit Dateien kurz erläutern. Probleme
+mit Dateien (z.\,B. falsche Zugriffsrechte) sind ein häufiger Grund, warum Programme nicht
+funktionieren und die man schnell mit \strace{} finden kann. Daher beschränke ich mich in diesem
+Vortrag auf Dateioperationen, da diese für Nicht-Entwickler am verständlichsten sind.
+
+Um einen Text aus einer Datei zu lesen, kommuniziert ein Programm mit dem Betriebssystem
+folgendermaßen:
+
+\begin{enumerate}
+  \item \texttt{open()} öffnet die Datei und gibt einen sog. \emph{Dateideskriptor} zurück. Hierbei
+   handelt es sich um eine Zahl, die innerhalb eines Prozesses eindeutig ist und die geöffnete
+   Datei referenziert. Unter Unix werden Dateideskriptoren auch für viele andere Objekte verwendet, 
+   so zum Beispiel für einen \emph{Socket,} einen abstrakten Kanal zur Kommunikation in Netzwerken.
+
+   Als Parameter erhält der Systemaufruf neben dem \emph{Pfad} der Datei auch den 
+   \emph{Zugriffsmodus}, also ob die Datei gelesen oder geschrieben werden soll und ob ggf. die 
+   Datei neu erstellt wird wenn sie nicht bereits vorhanden ist.
+
+  \item \texttt{read()} liest den Inhalt von einer Datei. Das erste Argument ist der
+   \emph{Dateideskriptor,} danach folgt ein Speicherbereich, in den der Inhalt geschrieben wird.
+   Der Rückgabewert ist die Anzahl der gelesenen Bytes.
+
+  \item \texttt{close()} schließt die Datei, gibt den Dateideskriptor also wieder frei.
+\end{enumerate}
+
+Die Dokumentation aller Systemaufrufe findet man in Sektion der Manpages, also bspw.
+\emph{read(2)}. Zum Anzeigen dient der Befehl \texttt{man 2 read}.
 
     
 \end{document}
