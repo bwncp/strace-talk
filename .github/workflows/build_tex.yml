@@ -13,7 +13,7 @@ jobs:
       run: echo Hello, world!
     - name: Install dependencies
       run: |
-        sudo apt install latexmk texlive-latex-base
+        sudo apt install latexmk texlive-latex-base texlive-latex-recommended texlive-lang-german texlive-fonts-extra texlive-luatex
     - name: Run a multi-line script
       run: |
         cd paper; latexmk
