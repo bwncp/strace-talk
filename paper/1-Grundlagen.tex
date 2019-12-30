@@ -1,0 +1,126 @@
+\section{Grundlagen}
+
+Bevor wir uns damit beschäftigen, wie man \strace{} verwendet, benötigen wir etwas
+Hintergrundwissen, um zu verstehen, was uns das Tool überhaupt anzeigt: Nämlich die sogenannten
+\emph{Systemaufrufe} oder engl. \emph{system calls}.
+
+\subsection{User-Mode und Kernel-Mode}
+
+Zunächst müssen wir uns vergegenwärtigen, dass ein "`moderner"'\footnote{Also letztlich alles, was
+nach den 1990er Jahren gebaut wurde und etwas größer ist, also kein einfacher Mikrocontroller in
+einer Waschmaschine.} Prozessor (mindestens) zwei Modi besitzt: Den \emph{User-Mode} und den
+\emph{Kernel-Mode}.
+
+\begin{description}
+  \item[Kernel-Mode]
+    Arbeitet die CPU im \emph{Kernel-Mode,} so ist jeder beliebige Befehl zur Ausführung 
+    zugelassen. Sie kann auf sämtliche Speicherbereiche und damit auch auf sämtliche Hardware 
+    zugreifen. Je nach Architektur nennt man diesen Modus auch \emph{Supervisor-Modus} oder
+    allgemein auch \emph{privilegierten Modus}.
+
+    Unter Linux nutzt nur der \emph{Kernel} (Betriebssystemkern) diesen Modus.
+
+  \item[User-Mode] Arbeitet die CPU im User-Mode, so ist nur ein eingeschränkter Befehlssatz zur
+     Ausführung zugelassen. Es sind also nicht alle Befehle erlaubt, ebenso kann nicht auf alle Speicherbereiche und auch nicht direkt auf Hardware zugegriffen werden. 
+
+     In diesem Modus werden normale Programme ausgeführt, auch jene, die mit Administrator-Rechten 
+     laufen.
+\end{description}
+
+\subsection{Systemaufrufe}
+
+An dieser Stelle kommen nun die Systemaufrufe ins Spiel: Immer wenn ein Programm (im User-Mode)
+läuft und Dienste des Betriebssystems benötigt, die nur im Kernel-Mode ausgeführt werden können,
+setzt es einen Systemaufruf ab, um diesen Dienst in Anspruch zu nehmen. Natürlich prüft der Kernel
+vor der Ausführung, ob der Prozess die entsprechende Berechtigung besitzt.
+
+Es gibt Systemaufrufe für verschiedene Dinge, sie lassen sich in Gruppen
+zusammenfassen:
+
+\begin{itemize}
+  \item \textbf{Datei u. Verzeichnisverwaltung:} Erstellen, Auflisten, Löschen von Dateien und 
+    Verzeichnissen sowie Lesen und Schreiben von Daten. Abfragen und Ändern von Metadaten.
+  \item \textbf{Prozessverwaltung:} Erzeugen und Terminieren von Prozessen sowie Abfrage deren 
+   Status.
+  \item \textbf{Interprozesskommunikation (IPC):} Synchronisation und Kommunikation mit anderen Tasks, z.\,B. über Shared Memory, FIFOs oder Semaphoren.
+  \item \textbf{Netzwerkkommunikation:} Senden und Empfangen von Daten über Netzwerke mit sog.
+   \emph{Sockets,} normalerweise über TCP/IP aber auch über andere Protokolle wie Bluetooth.
+  \item \textbf{Sonstiges:} Darüber hinaus gibt es noch eine Reihe von Systemaufrufen, die sich
+    nicht in die Gruppen einfügen, bspw. die Abfrage und das Setzen der Systemzeit.
+\end{itemize}
+
+Die Systemaufrufe sind relativ einfach gehalten. Die meisten komplexen Aufgaben setzen sich aus
+einfachen Systemaufrufen zusammen, die dann mit Hilfe von Programmierschnittstellen (APIs\footnote{
+engl. \emph{Application Programming Interface}}) dem Entwickler mit Bibliotheken zugänglich gemacht
+werden. Zum Beispiel gibt es keinen Systemaufruf für das Anzeigen eines Fensters: Stattdessen
+kommuniziert die Applikation mit dem \emph{X-Server} über ein festgelegtes Protokoll und verwendet
+dafür fertige Programmbibliotheken.
+
+\minisec{Dateioperationen}
+
+An dieser Stelle möchte ich einige Systemaufrufe zum Arbeiten mit Dateien kurz erläutern. Probleme
+mit Dateien (z.\,B. falsche Zugriffsrechte) sind ein häufiger Grund, warum Programme nicht
+funktionieren und die man schnell mit \strace{} finden kann. Daher beschränke ich mich in diesem
+Vortrag auf Dateioperationen, da diese für Nicht-Entwickler am verständlichsten sind.
+
+Um einen Text aus einer Datei zu lesen, kommuniziert ein Programm mit dem Betriebssystem
+folgendermaßen:
+
+\begin{enumerate}
+  \item \texttt{open()} öffnet die Datei und gibt einen sog. \emph{Dateideskriptor} (engl.
+   \emph{file descriptor)} zurück. Hierbei handelt es sich um einen Zahl, die innerhalb eines 
+   Prozesses eindeutig ist und die geöffnete Datei referenziert. Unter Unix werden 
+   Dateideskriptoren auch für viele andere Objekte verwendet, so zum Beispiel für einen
+   \emph{Socket,} einen abstrakten Kanal zur Kommunikation in Netzwerken.
+
+   Als Parameter erhält der Systemaufruf neben dem \emph{Pfad} der Datei auch den 
+   \emph{Zugriffsmodus}, also ob die Datei gelesen oder geschrieben werden soll und ob ggf. die 
+   Datei neu erstellt wird wenn sie nicht bereits vorhanden ist.
+
+  \item \texttt{read()} liest den Inhalt von einer Datei. Das erste Argument ist der
+   \emph{Dateideskriptor,} danach folgt ein Speicherbereich, in den der Inhalt geschrieben wird.
+   Der Rückgabewert ist die Anzahl der gelesenen Bytes.
+
+  \item \texttt{close()} schließt die Datei, gibt den Dateideskriptor also wieder frei.
+\end{enumerate}
+
+Die Dokumentation aller Systemaufrufe findet man in Sektion 2 der Manpages, also bspw.
+\href{http://man7.org/linux/man-pages/man2/read.2.html}{\emph{read(2)}}. Zum Anzeigen dient der
+Befehl \texttt{man 2 read} oder die Webseite 
+\href{http://man7.org/linux/man-pages}{man7.org/linux/man-pages}.
+
+\minisec{Parameter, Rückgabewerte und Fehlercodes}
+
+Die meisten Systemaufrufe haben eine oder mehrere Argumente, deren Typ vom konkreten Aufruf abhängt
+und in der jeweiligen Manpage dokumentiert ist.
+
+Wichtig sind neben den Parameter auch die Rückgabewerte der Systemaufrufe. Der Rückgabewert ist
+immer eine Zahl. Positive Werte (inkl. der Null) stehen hierbei für das erfolgreiche Ausführen
+des Systemaufrufs, deren Bedeutung vom Systemauruf abhängt. So gibt -- wie eben schon erwähnt --
+der Auruf \texttt{read()} die Anzahl der gelesenen Zeichen zurück, 0 steht für das Dateiende. 
+
+Im Fehlerfall wird immer ein negativer Fehlercode zurückgegeben. Es gibt vom Betriebssystem ein 
+paar hundert vordefinierte Fehlercodes, die gängigsten sind in
+\href{http://man7.org/linux/man-pages/man3/errno.3.html}{\emph{errno(3)}} dokumentiert.
+Glücklicherweise kennt \strace{} die Fehlercodes und übersetzt sie in einen symbolischen Bezeichner
+und gibt dahinter auch die Bedeutung aus. \autoref{tab:errno} zeigt einige verbeitete
+Fehler"=Rückgabewerte mit dessen Bedeutung.
+
+\begin{table}[htb]
+  \centering\small
+  \begin{tabular}{|r@{~~}l|l|}
+    \hline
+    \multicolumn{2}{|l|}{\textbf{Fehlercode}}        & \textbf{Bedeutung} \\
+    \hline
+    -1      & \texttt{EPERM}     & Die Operation ist nicht erlaubt \\
+    -2      & \texttt{ENOENT}    & No such file or directory \\
+    -5      & \texttt{EIO}       & Eingabe-/Ausgabefehler \\
+    -13     & \texttt{EACCES}    & Keine Berechtigung \\
+    -20     & \texttt{ENOTDIR}   & Ist kein Verzeichnis \\
+    -21     & \texttt{EISDIR}    & Ist ein Verzeichnis \\
+
+    \hline
+  \end{tabular}
+  \caption{Auswahl häufiger Fehlercodes mit Bedeutung}
+  \label{tab:errno}
+\end{table}
