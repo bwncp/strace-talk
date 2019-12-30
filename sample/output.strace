@@ -1,5 +1,3 @@
-
-
 ...
 
 openat(AT_FDCWD, "somefile", O_RDONLY|O_CLOEXEC) = 3

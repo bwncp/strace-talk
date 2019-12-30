@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="190.80212mm"
+   height="58.019836mm"
+   viewBox="0 0 190.80212 58.019836"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   sodipodi:docname="sample-listing.svg">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:stockid="Arrow2Send"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Send"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1523"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-0.3,0,0,-0.3,0.69,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="ExperimentalArrow"
+       orient="auto-start-reverse"
+       refY="3"
+       refX="5"
+       id="ExperimentalArrow"
+       inkscape:isstock="true">
+      <path
+         id="path1743"
+         d="M 10,3 0,6 V 0 Z"
+         style="fill:context-stroke;stroke:#000000;stroke-opacity:1"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyTriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="EmptyTriangleOutL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1650"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker3163"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path3161"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker2249"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path2247"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="338.49406"
+     inkscape:cy="23.894323"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="2560"
+     inkscape:window-height="1375"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-left="1"
+     fit-margin-top="1"
+     fit-margin-right="1"
+     fit-margin-bottom="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-8.8889723,-5.6116581)">
+    <rect
+       style="opacity:1;fill:#eef4d7;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4007"
+       width="114.74918"
+       height="56.019836"
+       x="83.832069"
+       y="6.6116581" />
+    <rect
+       style="opacity:1;fill:#dde9af;fill-opacity:1;stroke:none;stroke-width:0.20000002;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4659"
+       width="114.85902"
+       height="7.8732462"
+       x="83.832077"
+       y="46.175022" />
+    <rect
+       y="15.180972"
+       x="83.832077"
+       height="21.503992"
+       width="114.85902"
+       id="rect4657"
+       style="opacity:1;fill:#dde9af;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="84.991707"
+       y="11.535189"
+       id="text1200"><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="11.535189"
+         style="stroke-width:0.26458332"
+         id="tspan1204">...</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="15.944911"
+         style="stroke-width:0.26458332"
+         id="tspan1206" /><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="20.354633"
+         style="stroke-width:0.26458332"
+         id="tspan1208"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4663">openat</tspan>(AT_FDCWD, &quot;somefile&quot;, O_RDONLY|O_CLOEXEC) = 3</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="24.764355"
+         style="stroke-width:0.26458332"
+         id="tspan1210"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4665">fstat</tspan>(3, {st_mode=S_IFREG|0644, st_size=6, ...}) = 0</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="29.174076"
+         style="stroke-width:0.26458332"
+         id="tspan1212"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4669">ioctl</tspan>(3, TCGETS, 0x7ffd33a6ed10)        = -1 ENOTTY</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="33.583797"
+         style="stroke-width:0.26458332"
+         id="tspan1214"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4671">lseek</tspan>(3, 0, SEEK_CUR)                   = 0</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="37.993523"
+         style="stroke-width:0.26458332"
+         id="tspan1216" /><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="42.403244"
+         style="stroke-width:0.26458332"
+         id="tspan1218"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4667">read</tspan>(3, &quot;12345\n&quot;, 4096)                = 6</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="46.812965"
+         style="stroke-width:0.26458332"
+         id="tspan1220" /><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="51.222687"
+         style="stroke-width:0.26458332"
+         id="tspan1222"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4675">close</tspan>(3)                                = 0</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="55.632408"
+         style="stroke-width:0.26458332"
+         id="tspan1224" /><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="60.042133"
+         style="stroke-width:0.26458332"
+         id="tspan1226"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4677">write</tspan>(1, &quot;5 bytes read\n&quot;, 13)          = 13</tspan><tspan
+         sodipodi:role="line"
+         x="84.991707"
+         y="64.451851"
+         style="stroke-width:0.26458332"
+         id="tspan1228" /></text>
+    <rect
+       y="6.6116581"
+       x="9.8889723"
+       height="56.019836"
+       width="73.9431"
+       id="rect4003"
+       style="opacity:1;fill:#fff6d5;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:#ffeeaa;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4651"
+       width="73.9431"
+       height="21.503992"
+       x="9.8889723"
+       y="15.180972" />
+    <rect
+       y="46.175022"
+       x="9.8889723"
+       height="7.8732462"
+       width="73.9431"
+       id="rect4653"
+       style="opacity:1;fill:#ffeeaa;fill-opacity:1;stroke:none;stroke-width:0.20000002;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="13.15319"
+       y="11.556145"
+       id="text1232"><tspan
+         sodipodi:role="line"
+         id="tspan1230"
+         x="13.15319"
+         y="11.556145"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Italic';stroke-width:0.26458332">#!/usr/bin/python3</tspan><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="15.965867"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1234" /><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="20.375589"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1240">f = <tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan1482">open</tspan>(<tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Italic'"
+   id="tspan1474">'somefile'</tspan>, <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Italic'"
+   id="tspan1476">'rb'</tspan>)</tspan><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="24.785311"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1242" /><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="29.195034"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1244" /><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="33.604755"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1246" /><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="38.014477"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1248" /><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="42.424198"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1250">bytes = f.<tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4679">read</tspan>(5)</tspan><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="46.833923"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1252" /><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="51.243645"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1254">f.<tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan4681">close</tspan>()</tspan><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="55.653366"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1256" /><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="60.063087"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1258"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan1484">print</tspan>(<tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold'"
+   id="tspan1486">len</tspan>(bytes), <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Italic'"
+   id="tspan1478">'bytes read'</tspan>)</tspan><tspan
+         sodipodi:role="line"
+         x="13.15319"
+         y="64.472809"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan1260" /></text>
+  </g>
+</svg>

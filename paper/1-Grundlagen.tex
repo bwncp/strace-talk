@@ -73,6 +73,10 @@ folgendermaßen:
    Dateideskriptoren auch für viele andere Objekte verwendet, so zum Beispiel für einen
    \emph{Socket,} einen abstrakten Kanal zur Kommunikation in Netzwerken.
 
+   Neben den Dateideskriptoren als Rückgabewert von Systemaurufen sind die ersten drei 
+   Dateideskriptoren bereits standardmäßig geöffnet und haben die in \autoref{tab:stdio} 
+   dargestellte Bedeutung.
+
    Als Parameter erhält der Systemaufruf neben dem \emph{Pfad} der Datei auch den 
    \emph{Zugriffsmodus}, also ob die Datei gelesen oder geschrieben werden soll und ob ggf. die 
    Datei neu erstellt wird wenn sie nicht bereits vorhanden ist.
@@ -83,6 +87,23 @@ folgendermaßen:
 
   \item \texttt{close()} schließt die Datei, gibt den Dateideskriptor also wieder frei.
 \end{enumerate}
+
+\begin{table}[htb]
+  \centering\small
+  \begin{tabular}{|p{1.2cm}ll|}
+    \hline
+    \textbf{Dateideskriptor} & \textbf{Symbol} & \textbf{Bedeutung} \\
+    \hline
+      0      & \texttt{STDIN}    & Standardeingabe (Tastatur) \\
+      1      & \texttt{STDOUT}   & Standardausgabe (Terminal) \\
+      2      & \texttt{STDERR}   & Standardfehlerausgabe (Terminal) \\
+    \hline
+  \end{tabular}
+  \caption{Standardmäßig geöffnete Dateideskriptoren}
+  \label{tab:stdio}
+\end{table}
+
+
 
 Die Dokumentation aller Systemaufrufe findet man in Sektion 2 der Manpages, also bspw.
 \href{http://man7.org/linux/man-pages/man2/read.2.html}{\emph{read(2)}}. Zum Anzeigen dient der
@@ -103,12 +124,15 @@ Im Fehlerfall wird immer ein negativer Fehlercode zurückgegeben. Es gibt vom Be
 paar hundert vordefinierte Fehlercodes, die gängigsten sind in
 \href{http://man7.org/linux/man-pages/man3/errno.3.html}{\emph{errno(3)}} dokumentiert.
 Glücklicherweise kennt \strace{} die Fehlercodes und übersetzt sie in einen symbolischen Bezeichner
-und gibt dahinter auch die Bedeutung aus. \autoref{tab:errno} zeigt einige verbeitete
-Fehler"=Rückgabewerte mit dessen Bedeutung.
+und gibt dahinter auch die Bedeutung aus.
 
-\begin{table}[htb]
+\autoref{tab:errno} zeigt einige verbeitete Fehler"=Rückgabewerte mit dessen Bedeutung. Obwohl der
+numerische Wert hier aufgelistet wurde, hat er in der Praxis -- anders als etwa unter Windows --
+keine Bedeutung. Programme geben, von wenigen Ausnahmen abgesehen, nur den Fehlertext aus.
+
+\begin{table}[b]
   \centering\small
-  \begin{tabular}{|r@{~~}l|l|}
+  \begin{tabular}{|r@{~~}l|p{5.2cm}|}
     \hline
     \multicolumn{2}{|l|}{\textbf{Fehlercode}}        & \textbf{Bedeutung} \\
     \hline
@@ -118,9 +142,11 @@ Fehler"=Rückgabewerte mit dessen Bedeutung.
     -13     & \texttt{EACCES}    & Keine Berechtigung \\
     -20     & \texttt{ENOTDIR}   & Ist kein Verzeichnis \\
     -21     & \texttt{EISDIR}    & Ist ein Verzeichnis \\
-
+    -28     & \texttt{ENOSPC}    & Auf dem Gerät ist kein Speicherplatz mehr verfügbar \\
     \hline
   \end{tabular}
   \caption{Auswahl häufiger Fehlercodes mit Bedeutung}
   \label{tab:errno}
 \end{table}
+
+\vspace{2cm}
