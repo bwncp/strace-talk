@@ -11,6 +11,7 @@
 \section{\strace{} in Aktion}
 
 \subsection{Analyse eines einfachen Programms}
+\label{sec:simpleprogram}
 
 Genug der Theorie. In diesem Abschnitt wollen wir uns die Ausgabe von \strace{} anhand eines
 einfachen Beispiels ansehen. \autoref{fig:sample-listing} zeigt links ein kurzes Python-Skript.
@@ -95,5 +96,101 @@ Ausgabe von \strace{} auch gleich mit enthalten.
 
 Danach kommen jede Menge Fehlerausgaben, die einfach deshalb in \strace{} auftauchen, weil sich das
 Python-Programm mit einer Ausnahme beendet.
+
+\subsection{Kindprozesse und Threads}
+
+\strace{} verfolgt standardmäßig nur den direkt gestarteten Prozess und den
+Haupt-Thread\footnote{Ein \emph{Thread} (von engl. \emph{thread} = „Faden“) ist ein
+Ausführungsstrang eines Programms. Mit Hilfe von Threads können Programme mehrere Dinge parallel
+erledigen ohne dass damit verschiedene, komplett getrennte Prozesse gestartet werden müssen. Somit
+können die Threads alle auf die gleichen Daten zugreifen.}. Aus Betriebssystemsicht (unter Linux)
+sind Threads und Kindprozesse\footnote{Vereinfacht gesagt: Wenn aus einem Programm ein anderes
+gestartet wird, nennt man den neu entstehenden Prozess \emph{Kindprozess.}} ziemlich ähnlich. Daher
+gibt es in \strace{} auch nur eine Option: Startet man \strace{} mit der Option \texttt{-f} (für
+\emph{follow),}) werden auch Kindprogramme und andere Threads beobachtet. Die Ausgabe wird jedoch
+schnell undübersichtlich -- wie man etwas Abhilfe schafft beschreibt \autoref{sec:fileoutput}.
+
+Um die Programme unterscheiden zu können beginnt jede Trace-Zeile eines Kindprozesses mit
+\texttt{[pid XXXX]}, wobei \texttt{XXXX} für die jeweilige Prozess-ID steht enthält.
+
+
+\subsection{Protokollierung in einer Datei}
+\label{sec:fileoutput}
+
+Wie wir in \autoref{sec:fileoutput} gesehen haben, wird die Ausgabe von \strace{} mit der des
+eigentlichen Programms vermischt. Zwar schreibt \strace{} auf die Standardfehlerausgabe, jedoch
+kann auch das zu beobachtenden Programm die Fehlerausgabe benutzen. Daher helfen Ausgabeumleitungen
+der Shell nicht weiter. Stattdessen kann mit der Option \texttt{-o \emph{Dateiname}} die gesamte
+Ausgabe von \strace{} in \texttt{\emph{Dateiname}} umgeleitet werden.
+
+Wird beim Tracen von Kindprozessen statt \texttt{-f} die Option \texttt{-ff} angegeben, erstellt
+\strace{} pro PID eine eigene Datei nach dem Schema \texttt{\emph{Dateiname}.\emph{PID}}. Das macht
+das Lesen übersichtlicher. Um die Systemaufrufe auch zeitlich einordnen zu können, kann man
+\strace{} mit \texttt{-t} anweisen, die aktuelle Systemzeit in die Protokolliertung hinzuzufügen,
+mit \texttt{-tt} auch in der Genauigkeit von Millisekunden. Die Protokollierung von Zeitstempeln
+ist unabhängig davon, ob die Ausgabe in eine Datei umgeleitet wird oder nicht.
+
+\subsection{\strace{} einschränken}
+
+Die vorhergehenden Abschnitte haben durch neue Optionen die Ausgabe immer noch angereichert, was
+zwar nützlich ist, aber das Ganze nicht unbedingt übersichtlicher macht. In diesem Abschnitt wollen
+wir den Output etwas einschränken.
+
+Meistens interessiert man sich nicht für das Verhalten des Programms als Ganzes sondern für einen
+bestimmten Teilaspekt. So könnte uns beispielsweise interessieren, warum eine Datei nicht geöffnet
+werden kann. Relevant ist also eigentlich nur der \texttt{open}-Systemaufruf.
+
+Zur Einschränkung gibt es die Option \texttt{-e trace=\emph{set}}; \texttt{\emph{set}}
+steht dabei für einen oder mehrere Systemaufrufe, jeweils durch Kommata getrennt.
+
+Nun ist es meistens eine schlechte Idee, \strace{} auf einen genauen Systemaufruf einzuschränken.
+Im konkreten Beispiel (warum wird eine Datei nicht gefunden) lauern zwei Fallen: Erstens wurde
+\texttt{open()} mittlerweile bei aktuellen C"=Bibliotheken durch \texttt{openat()} ersetzt, zweitens
+könnte das Programm vor dem Öffnen mit \texttt{stat()} prüfen, ob die Datei überhaupt existiert.
+
+Deshalb gibt es vordefinierte Gruppen, nämlich \texttt{\%file} für Dateioperationen.
+\autoref{tab:strace_groups} liefert die wichtigsten Gruppen für Systemaufrufe.
+
+
+\begin{figure*}[tb]
+  \lstinputlisting[numbers=left,xleftmargin=3em,stepnumber=2]{../sample/strace_file_ls.txt}
+  \caption{Einschränkung von \strace{} auf Dateioperationen}
+  \label{fig:fileonly}
+\end{figure*}
+
+
+\begin{table}[htb]
+  \centering\small
+  \begin{tabular}{|lp{6cm}|}
+    \hline
+    \textbf{Gruppe} & \textbf{Operationen} \\
+    \hline
+    \texttt{\%file}          & Dateioperationen, die einen Dateinamen als Argument
+                               bekommen, also beispielsweise \texttt{open,} \texttt{stat,}
+                               \texttt{chmod,} \texttt{unlink,} … \\
+    \texttt{\%desc}          & Dateioperationen, die einen Dateideskriptor als Argument
+                               bekommen, also z.\,B. \texttt{read,} \texttt{write,}
+                               \texttt{chmod,} \texttt{unlink,} … \\
+    \texttt{\%process}       & Systemaurufe zur Prozessverwaltung \\
+    \texttt{\%net}           & Systemaurufe zur Netzwerkprogrammierung \\
+    \texttt{\%signal}        & Systemaurufe bzgl. Behandlung von Signalen \\
+    \texttt{\%ipc}           & Operationen zur Interprozesskommunikation \\
+    \texttt{\%memory}        & Systemaufrufe zur Speicherverwaltung \\
+    \texttt{\%pure}          & Systemaufrufe ohne Argument, z.\,B. \texttt{getpid} \\
+    \hline
+  \end{tabular}
+  \caption{Gruppen von Systemcalls für \texttt{-e trace=\emph{group}}}
+  \label{tab:strace_groups}
+\end{table}
+
+Ein Beispiel: \autoref{fig:fileonly} zeigt die \emph{vollständige} Ausgabe von \texttt{strace -e 
+trace=\%file ls}. Ohne diese Einschränkung wäre das Listing 66 Zeilen lang! Zunächst werden
+die Biblitoheken und Übersetzungsdateien geladen, anschließend wird in Zeile 9 dann der
+Dateideskriptor für das aktuelle Arbeitsverzeichnis geöffnet. Zeile 10 und 11 sind bereits
+die eigentliche Ausgabe des Programms.
+
+Es gibt noch wesentlich mehr Möglichkeiten der Filterung, die in der Manpage
+\href{http://man7.org/linux/man-pages/man1/strace.1.html#OPTIONS}{\emph{strace(1)}} im Abschnitt
+„Options“ und weiter unter „Filtering“ detailliert beschrieben werden.
 
 

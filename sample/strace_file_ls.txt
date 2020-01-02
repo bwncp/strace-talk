@@ -1,0 +1,12 @@
+% strace -e trace=%file ls
+
+execve("/usr/bin/ls", ["ls"], 0x7fffb48134b0 /* 56 vars */) = 0
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (Datei oder Verzeichnis nicht gefunden)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+openat(AT_FDCWD, "/usr/lib/libcap.so.2", O_RDONLY|O_CLOEXEC) = 3
+openat(AT_FDCWD, "/usr/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = 3
+openat(AT_FDCWD, ".", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3
+bin   client_body_temp	dev  fastcgi_temp  lib	  lost+found  opt   root  sbin	sys  usr
+boot  data		etc  home	   lib64  mnt	      proc  run   srv	tmp  var
++++ exited with 0 +++
