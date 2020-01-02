@@ -1,0 +1,120 @@
+\documentclass[ngerman,compress,11pt,xcolor={x11names,svgnames}]{beamer}
+\usepackage[ngerman]{babel}
+\setcounter{tocdepth}{4}
+\usepackage{fontawesome}
+\usepackage[framemethod=tikz]{mdframed}
+
+% some custom settings
+\usepackage{url,graphicx,listings,pifont}
+\definecolor{listinggray}{rgb}{0.85,0.85,0.85}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\usetheme{Welitsch}
+\usecolortheme{beaver}
+
+\usepackage{fontspec}
+\setmainfont[Ligatures=TeX]{Calibri}
+\setsansfont[Ligatures=TeX]{Calibri}
+%\setmonofont[Scale=0.9]{Consolas}
+\usepackage[scale=.91]{sourcecodepro}
+
+\newcommand{\strace}{\emph{strace}}
+
+\hypersetup{colorlinks = true,
+            linkcolor = DarkRed,
+            urlcolor  = DarkRed,
+            citecolor = DarkRed,
+            unicode = true,
+            anchorcolor = DarkRed}
+
+\lstset{%
+        framerule=0px,
+        %fillcolor=\color{listinggray},
+        basicstyle=\ttfamily\scriptsize,%
+        escapechar={},
+        captionpos=b,
+        columns=fullflexible,
+        tabsize=4,
+        frame=tb,
+        showstringspaces=false,
+        keepspaces=true,
+        framexleftmargin=1.5mm,
+        framextopmargin=0mm,
+        framexbottommargin=0mm,
+        aboveskip=1mm,
+        belowskip=1mm,
+        texcl=true,
+        inputencoding=utf8,
+}
+
+
+\AtBeginSection[]{
+  \begin{frame}[t]
+    \frametitle{Inhalt}
+    \tableofcontents[currentsection,hideothersubsections]
+  \end{frame}
+}
+
+\urlstyle{sf}
+
+\title{\textbf{Linux-Fehleranalyse mit \strace}}
+
+\author{Bernhard Walle}
+
+\institute[NCP]{NCP engineering GmbH}
+
+\date{14. Januar 2020}
+
+\begin{document}
+
+{
+  \usebackgroundtemplate{\includegraphics[height=1.0\paperheight]{../images/pinguine.pdf}}
+  \begin{frame}[plain]
+    \begin{mdframed}[tikzsetting={fill=white,fill opacity=0.9},backgroundcolor=none,leftmargin=0,
+    rightmargin=40,innertopmargin=8pt,innerbottommargin=8pt]
+
+    {\huge \inserttitle \par }  
+    {\Large \insertsubtitle \par }
+
+    \bigskip
+    
+    \insertauthor, \insertinstitute \\
+    {\footnotesize \href{mailto:bernhard.walle@ncp-e.com}{{\FA \faEnvelope} bernhard.walle@ncp-e.com} }
+
+  \end{mdframed}
+  \end{frame}
+}
+
+
+\section{Grundlagen}
+
+\subsection{User-Mode und Kernel-Mode}
+
+
+
+\subsection{Systemaufrufe}
+
+
+\section{\strace{} in Aktion}
+
+
+
+{
+  \usebackgroundtemplate{\includegraphics[height=1.0\paperheight]{../images/pinguine.pdf}}
+  \begin{frame}[b,plain]
+    \begin{mdframed}[tikzsetting={fill=white,fill opacity=0.9},backgroundcolor=none,leftmargin=0,
+    leftmargin=40,rightmargin=40,skipbelow=80,innertopmargin=6mm,innerbottommargin=6mm]
+
+    \begin{center}
+      \emph{Vielen Dank für Eure Aufmerksamkeit!}
+    \end{center}
+  \end{mdframed}
+  \vspace{2cm}
+
+\end{frame}
+}
+
+
+
+\end{document}
+
+% vim: set sw=2 ts=2 et tw=100:

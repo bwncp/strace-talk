@@ -1,8 +1,13 @@
 *.aux
 *.fls
 *.out
-strace.pdf
+paper/*.pdf
+slides/*.pdf
 *.synctex.*
 *.log
+*.nav
 *.fdb_latexmk
+*.snm
+*.toc
+*.vrb
 __latexindent*.tex

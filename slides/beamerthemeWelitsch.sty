@@ -1,0 +1,97 @@
+% Welitsch theme for LaTeX beamer
+%
+% Copyright 2013 by Michael Fiedler <michael.fiedler87@gmx.de>
+%
+% This theme is based on the Boadilla theme by Manuel Carro <mcarro@fi.upm.es>.
+% Colors were inspired by the i4 theme by Daniel Lohmann <dl@cs.fau.de>
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+
+\mode<presentation>
+
+\newif\ifbeamer@secheader
+\beamer@secheaderfalse
+
+\DeclareOptionBeamer{secheader}{\beamer@secheadertrue}
+\ProcessOptionsBeamer
+
+%
+% color definitions
+%
+\definecolor{i4red}{HTML}{B01C2E}
+\definecolor{i4green}{HTML}{008000}
+\definecolor{i4blue}{HTML}{00669E}
+
+\usecolortheme{rose}
+\useinnertheme{circles}
+\usecolortheme{seahorse}
+% enumerations of format 1., 1.1, 1.1.1 so \label and \ref work properly
+\setbeamertemplate{items}[default]
+
+%
+% color setup
+%
+\setbeamercolor{alerted text}{fg=i4red}
+% itemize and enumerate
+\setbeamercolor{itemize subitem}{fg=i4red}
+\setbeamercolor{itemize subsubitem}{fg=i4green}
+\setbeamercolor{enumerate subitem}{fg=i4red}
+\setbeamercolor{enumerate subsubitem}{fg=i4green}
+% for \setbeamertemplate{items}[circle]
+\setbeamercolor{subitem projected}{bg=i4red}
+\setbeamercolor{subsubitem projected}{bg=i4green}
+%\setbeamercolor{section number projected}{bg=black,fg=white}
+% table of contents
+\setbeamercolor{section in toc}{fg=black,bg={}}
+\setbeamercolor{subsection in toc}{fg=black,bg={}}
+\setbeamercolor{structure}{fg=i4blue,bg={}}
+
+% for grayscale printing: more light or even white frame title background
+%\setbeamercolor{titlelike}{bg=structure!10!white}
+%\setbeamercolor{titlelike}{bg=white}
+
+% itemize
+% Tills' opinion: should be done in an inner theme, not here.
+\useitemizeitemtemplate{%
+		\normalsize\raise0.5pt\hbox{\textbullet}
+}
+\usesubitemizeitemtemplate{%
+    \scriptsize\raise1.5pt\hbox{\color{i4red}{$\blacktriangleright$}}%
+}
+\usesubsubitemizeitemtemplate{%
+    \tiny\raise1.5pt\hbox{\color{i4green}$\bigstar$}%
+}
+
+% cross references shall have full qualified names, e. g. 1.2.3 for a label in
+% a enumerate environment of three levels
+\setbeamertemplate{itemize/enumerate body begin}{
+  \renewcommand\theenumii{\theenumi.\arabic{enumii}}
+  \renewcommand\theenumiii{\theenumii.\arabic{enumiii}}
+}
+%\setbeamertemplate{enumerate item}{\arabic{enumi}.}
+\setbeamertemplate{enumerate subitem}{\theenumii}
+\setbeamertemplate{enumerate subsubitem}{\theenumiii}
+%\setbeamertemplate{enumerate item}{\insertenumlabel}
+
+% number captions of figures etc.
+%\setbeamertemplate{caption}[numbered]
+
+% for larger bibliographies, numbered items may be better than just a book
+% image
+%\setbeamertemplate{bibliography item}[text]
+
+% disable navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% show the current frame number in the footline
+\setbeamertemplate{footline}[frame number]
+
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+\ifbeamer@secheader\else\setbeamertemplate{headline}[default]\fi
+
+\mode
+<all>
