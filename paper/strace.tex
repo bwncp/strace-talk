@@ -15,19 +15,18 @@
 \usepackage{lipsum}
 
 \lstset{                   
-       basicstyle=\scriptsize\ttfamily, % Standardschrift
+       basicstyle=\footnotesize\ttfamily,
        tabsize=4,                                    
-       xleftmargin=3em,                   
        showstringspaces=false,
        keywordstyle=\bfseries\color{blue!40!black},
        commentstyle=\color {green!40!black},
        numberstyle=\scriptsize\ttfamily, %
-       numbers=left,
-       stepnumber=1,
-       numbersep=5pt,
+       numbers=none,
        frame=tb,
        breaklines=true,
-       captionpos=b
+       captionpos=b,
+       breakindent=3pt,
+       postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
   }
 \usepackage[scale=.92]{sourcecodepro} 
 
@@ -35,7 +34,7 @@
 
 \begin{document}
 
-\title{Fehleranalyse unter Linux mit \emph{strace}}
+\title{Linux-Fehleranalyse mit \emph{strace}}
 
 \author{\href{mailto:bernhard.walle@ncp-e.com}{Bernhard Walle},
         \href{https://www.ncp-e.com}{NCP engineering GmbH}}

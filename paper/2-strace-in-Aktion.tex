@@ -76,3 +76,24 @@ Systemaufrufe klar erkennbar sind. Dennoch nachfolgend ein paar Erklärungen.
   \item \texttt{write()} schreibt die Meldung "`5 Bytes read"' auf die Standardausgabe. Gemäß
     \autoref{tab:errno} ist der Dateideskriptor 1 die Standardausgabe.
 \end{itemize}
+
+\minisec{Fehlerfall}
+
+Nun löschen wir die Datei \texttt{somefile,} so dass sie nicht vorhanden ist\footnote{Deshalb heißt
+das Programm ja auch \texttt{notfound.py}.} und starten das Programm erneut. Die wesentliche
+Zeile der \strace-Ausgabe sieht wie folgt aus:
+
+\begin{lstlisting}
+openat(AT_FDCWD, "somefile", O_RDONLY|O_CLOEXEC) = -1 ENOENT (Datei oder Verzeichnis nicht gefunden)
+\end{lstlisting}
+
+Hier ist klar erkennbar, dass die Datei nicht geöffnet wurde, weil die nicht exisistiert. Statt
+einem (positiven) Dateideskriptor gibt \texttt{openat()} den Fehlercode $-1$ zurück, der gemäß
+\href{http://man7.org/linux/man-pages/man3/errno.3.html}{\emph{errno(3)}} bzw. \autoref{tab:errno} 
+„Datei oder Verzeichnis nicht gefunden“ bedeutet. Dieser Fehlertext ist praktischerweise in der
+Ausgabe von \strace{} auch gleich mit enthalten.
+
+Danach kommen jede Menge Fehlerausgaben, die einfach deshalb in \strace{} auftauchen, weil sich das
+Python-Programm mit einer Ausnahme beendet.
+
+
