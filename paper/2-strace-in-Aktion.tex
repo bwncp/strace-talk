@@ -193,4 +193,9 @@ Es gibt noch wesentlich mehr Möglichkeiten der Filterung, die in der Manpage
 \href{http://man7.org/linux/man-pages/man1/strace.1.html#OPTIONS}{\emph{strace(1)}} im Abschnitt
 „Options“ und weiter unter „Filtering“ detailliert beschrieben werden.
 
+\subsection{Strings}
 
+Der Übersichtlichkeit halber schneidet \strace{} längere Strings ab, beispielsweise bei Texten, die
+mit \texttt{write} ausgegeben werden. Der Schalter \texttt{-s \emph{LÄNGE}} erlaubt es dem
+Benutzer, eine deutlich längere Maximalgröße für Strings festzulegen. Dateinamen werden nie
+abgeschnitten.

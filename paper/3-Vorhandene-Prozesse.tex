@@ -1,0 +1,52 @@
+\section{Vorhandene Prozesse}
+
+Bisher haben wir \strace{} immer mit einem Programm von Anfang an gestartet. Aber oftmals
+ist es auch nützlich, \strace{} auf bereits laufende Prozesse loszulassen, um beispielsweise zu
+sehen warum ein Programm hängt.
+
+Zunächst müssen wir dafür die Prozess-ID (PID) des Prozesses herausfinden, entweder mit
+\texttt{pidof} oder mit \texttt{ps}. Anschließend kann sich \strace{} mit \texttt{-p \emph{PID}}
+an den laufenden Prozess anhängen. Die Option \texttt{-f} (mehrere Threads/Kindprozesse) gilt
+analog.
+
+\minisec{Berechtigungen}
+
+Allerdings darf man natürlich nur die Prozesse des eigenen Benutzers verfolgen, nur der
+Root-Benutzer darf fremde Tasks tracen. Die Standardkonfiguration vieler Linux-Distributionen
+verbietet es allerdings, dem normalen Benutzer fremde Prozesse zu verfolgen. Diese Einstellung
+kann mit folgendem Befehl (temporär) geändert werden:
+
+\begin{verbatim}
+  % sudo sysctl kernel.yama.ptrace_scope=0
+\end{verbatim}
+
+
+
+
+\minisec{Dateideskriptoren zuordnen}
+
+Läuft der Prozess bereits, fehlen einem die entsprechenden \texttt{open()}-Aufrufe, um zu wissen,
+welcher Dateideskriptor zu welcher Datei gehört. Diese Information bekommt man leicht aus dem
+Proc-Dateisystem: Pro Prozess-ID existiert in \texttt{/proc} ein Verzeichnis, mit jeweils einem
+Unterverzeichnis \texttt{fd} (für \emph{file descriptor}). Dort existiert wiederum für jeden
+numerischen Dateideskriptor ein symbolischer Link, der zur tatsächlichen Datei zeigt.
+
+Am besten betrachten wir ein Beispiel, nämlich wieder unser leicht modifizertes Programm
+\texttt{notfound.py} aus \autoref{fig:sample-listing}. Es wurde lediglich zwischen dem Öffnen
+und Schließen der Datei eine kleine Wartezeit eingefügt.
+
+Zunächst finden wir mit \texttt{ps aux|grep notfound.py} die PID des Programms heraus, anschließend
+erzeugen wir ein Verzeichnislisting mit \texttt{ls -l /proc/\emph{PID}/fd}:
+
+\begin{lstlisting}
+lrwx------ 1 bw bw 64  2. Jan 16:35 0 -> /dev/pts/1
+lrwx------ 1 bw bw 64  2. Jan 16:35 1 -> /dev/pts/1
+lrwx------ 1 bw bw 64  2. Jan 16:35 2 -> /dev/pts/1
+lr-x------ 1 bw bw 64  2. Jan 16:35 3 -> /home/bw/devel/strace-talk/sample/somefile
+\end{lstlisting}
+
+0, 1 und zwei sind jeweils mit Standardein-, -ausgabe und -fehlerausgabe vorbelegt (vgl.
+\autoref{tab:stdio} während der Dateideskriptor 3 auf die vom Programm selbst geöffnete Datei zeigt.
+
+\textbf{Tipp:} Mit dem Schalter \texttt{-y} kann diese Arbeit auch \strace{} für uns übernehmen.
+Bei jedem Dateideskriptor wird zusätzlich in spitzen Klammern die zugehörige Datei mit dargestellt!
