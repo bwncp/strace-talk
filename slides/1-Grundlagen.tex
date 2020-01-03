@@ -1,0 +1,147 @@
+\section{Grundlagen}
+
+\subsection{User-Mode und Kernel-Mode}
+
+\begin{frame}
+  \frametitle{User-Mode und Kernel-Mode}
+
+  \begin{block}{Kernel-Mode}
+    \begin{itemize}
+      \item Zugriff auf gesamten Speicher und Hardware möglich
+      \item auch als \emph{Supervisor-Modus} oder \emph{privilegierter Modus} bezeichnet
+      \item wird nur vom Kernel verwendet
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{User-Mode}
+    \begin{itemize}
+      \item eingeschränkter Befehlssatz
+      \item verwenden normale Programme, auch als Root
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Systemaufrufe}
+
+\begin{frame}
+  \frametitle{Systemaufrufe}
+
+  \begin{block}{Was sind Systemaufrufe?}
+    Systemaufrufe ermöglichen einem Programm, Dienste des Betriebssystems in Anspruch zu nehmen,
+    die den \emph{Kernel-Mode} erfordern.
+  \end{block}
+  
+  \begin{block}{Gruppen von Systemaufrufen}
+
+    \begin{itemize}
+      \item Datei- und Verzeichnisverwaltung
+      \item Prozessmanagement
+      \item Speicherverwaltung
+      \item Interprozesskommunikation (IPC)
+      \item Netzwerkkommunikation
+      \item Behandlung von Signalen
+      \item Sonstiges
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systemaufrufe für Dateioperationen}
+
+  \begin{itemize}
+    \item \texttt{open()} 
+      \begin{itemize}
+        \item öffnet Datei
+        \item gibt \emph{Dateideskriptor} zurück
+        \item erwartet Dateinamen und Zugriffsmodus als Parameter
+      \end{itemize}
+
+    \item \texttt{read()}
+      \begin{itemize}
+        \item liest Inhalt von einer Datei
+        \item bekommt \emph{Dateideskriptor} (und Speicher) als Argument
+        \item gibt Anzahl gelesener Bytes zurück
+      \end{itemize}
+
+    \item \texttt{close()}
+      \begin{itemize}
+        \item gibt Dateideskriptor wieder frei
+      \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dateideskriptoren}
+
+  \begin{block}{Bedeutung}
+    \begin{itemize}
+      \item identifiziert geöffnete Datei
+      \item Zahl, innerhalb eines Prozesses eindeutig
+      \item auch für andere Objekte, insb. \emph{Sockets} (für Netzwerkkommunikation)
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Vordefinierte Dateideskriptoren}
+    \centering
+    \medskip
+    \begin{tabular}{|lll|}
+      \hline
+      \textbf{Dateideskriptor} & \textbf{Symbol} & \textbf{Bedeutung} \\
+      \hline
+        0      & \texttt{STDIN}    & Standardeingabe (Tastatur) \\
+        1      & \texttt{STDOUT}   & Standardausgabe (Terminal) \\
+        2      & \texttt{STDERR}   & Standardfehlerausgabe (Terminal) \\
+      \hline
+    \end{tabular}
+    \medskip
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parameter und Rückgabewerte}
+
+  \begin{block}{Parameter}
+    \begin{itemize}
+      \item Zahl und Typ abhängig vom konkreten Systemaufruf
+      \item dokumentiert in der jeweiligen Manpage
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Rückgabewert}
+    \begin{itemize}
+      \item immer eine Zahl
+      \item $\ge$ 0: Bedeutung abhängig vom Systemaufruf
+      \item $<$   0: Fehlercode
+      \begin{itemize}
+        \item vordefinierte Werte (POSIX, Linux-spezifisch)
+        \item dokumentiert in \href{http://man7.org/linux/man-pages/man3/errno.3.html}{\emph{errno(3)}} 
+        \item kleine Auswahl auf der nächsten Folie
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Auswahl verbreiter Fehlercodes}
+
+  \bigskip\centering
+  \begin{tabular}{|r@{~~}l|l|}
+    \hline
+    \multicolumn{2}{|l|}{\textbf{Fehlercode}}        & \textbf{Bedeutung} \\
+    \hline
+    -1      & \texttt{EPERM}     & Die Operation ist nicht erlaubt \\
+    -2      & \texttt{ENOENT}    & Datei oder Verzeichnis nicht gefunden \\
+    -5      & \texttt{EIO}       & Eingabe-/Ausgabefehler \\
+    -13     & \texttt{EACCES}    & Keine Berechtigung \\
+    -20     & \texttt{ENOTDIR}   & Ist kein Verzeichnis \\
+    -21     & \texttt{EISDIR}    & Ist ein Verzeichnis \\
+    -28     & \texttt{ENOSPC}    & Auf dem Gerät ist kein Speicherplatz mehr verfügbar \\
+    \hline
+  \end{tabular}
+
+
+\end{frame}
