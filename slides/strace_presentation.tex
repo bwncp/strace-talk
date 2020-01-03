@@ -5,16 +5,27 @@
 \usepackage[framemethod=tikz]{mdframed}
 
 % some custom settings
-\usepackage{url,graphicx,listings,pifont}
-\definecolor{listinggray}{rgb}{0.85,0.85,0.85}
-\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\usepackage{url,graphicx,listings}
 \usetheme{Welitsch}
 \usecolortheme{beaver}
+\lstset{                   
+       basicstyle=\footnotesize\ttfamily,
+       tabsize=4,    
+       showstringspaces=false,
+       numberstyle=\scriptsize\ttfamily, %
+       numbers=none,
+       breaklines=true,
+       captionpos=b,
+       breakindent=3pt,
+       postbreak=\mbox{$\hookrightarrow$\space},
+  }
+
+%\setmonofont[Scale=0.9]{Consolas}
+
 
 \usepackage{fontspec}
 \setmainfont[Ligatures=TeX]{Calibri}
 \setsansfont[Ligatures=TeX]{Calibri}
-%\setmonofont[Scale=0.9]{Consolas}
 \usepackage[scale=.91]{sourcecodepro}
 
 \newcommand{\strace}{\emph{strace}}
@@ -25,26 +36,6 @@
             citecolor = DarkRed,
             unicode = true,
             anchorcolor = DarkRed}
-
-\lstset{%
-        framerule=0px,
-        %fillcolor=\color{listinggray},
-        basicstyle=\ttfamily\scriptsize,%
-        escapechar={},
-        captionpos=b,
-        columns=fullflexible,
-        tabsize=4,
-        frame=tb,
-        showstringspaces=false,
-        keepspaces=true,
-        framexleftmargin=1.5mm,
-        framextopmargin=0mm,
-        framexbottommargin=0mm,
-        aboveskip=1mm,
-        belowskip=1mm,
-        texcl=true,
-        inputencoding=utf8,
-}
 
 
 \AtBeginSection[]{
@@ -85,9 +76,7 @@
 }
 
 \input{1-Grundlagen}
-
-\section{\strace{} in Aktion}
-
+\input{2-strace-in-Aktion}
 
 
 {
