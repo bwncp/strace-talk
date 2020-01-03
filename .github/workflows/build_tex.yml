@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Install dependencies
       run: |
-        sudo apt install latexmk texlive-latex-base texlive-latex-recommended texlive-lang-german texlive-fonts-extra texlive-luatex
+        sudo apt install latexmk texlive-latex-base texlive-latex-recommended texlive-lang-german texlive-fonts-extra texlive-luatex texlive-xetex
     - name: Build the paper with latexmk
       run: |
         cd paper; latexmk
