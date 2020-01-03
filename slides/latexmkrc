@@ -1,3 +1,5 @@
+@default_files = ('strace_presentation.tex');
+
 # not supported by the latexmk version on github
 # $pdf_mode = 4;
 $pdflatex = 'lualatex -file-line-error %O %S';
