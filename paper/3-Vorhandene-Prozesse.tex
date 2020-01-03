@@ -16,9 +16,9 @@ Root-Benutzer darf fremde Tasks tracen. Die Standardkonfiguration vieler Linux-D
 verbietet es allerdings, dem normalen Benutzer fremde Prozesse zu verfolgen. Diese Einstellung
 kann mit folgendem Befehl (temporär) geändert werden:
 
-\begin{verbatim}
+\begin{lstlisting}
   % sudo sysctl kernel.yama.ptrace_scope=0
-\end{verbatim}
+\end{lstlisting}
 
 Unter \cite{yama} ist diese Einstellung dokumentiert. Über einen Eintrag in
 \href{http://man7.org/linux/man-pages/man5/sysctl.conf.5.html}{\emph{sysctl.conf(5)}} kann man

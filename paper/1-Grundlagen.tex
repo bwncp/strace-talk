@@ -11,21 +11,16 @@ nach den 1990er Jahren gebaut wurde und etwas größer ist, also kein einfacher 
 einer Waschmaschine.} Prozessor (mindestens) zwei Modi besitzt: Den \emph{User-Mode} und den
 \emph{Kernel-Mode}.
 
-\begin{description}
-  \item[Kernel-Mode]
-    Arbeitet die CPU im \emph{Kernel-Mode,} so ist jeder beliebige Befehl zur Ausführung 
-    zugelassen. Sie kann auf sämtliche Speicherbereiche und damit auch auf sämtliche Hardware 
-    zugreifen. Je nach Architektur nennt man diesen Modus auch \emph{Supervisor-Modus} oder
-    allgemein auch \emph{privilegierten Modus}.
+Arbeitet die CPU im \emph{Kernel-Mode,} so ist jeder beliebige Befehl zur Ausführung zugelassen.
+Sie kann auf sämtliche Speicherbereiche und damit auch auf sämtliche Hardware zugreifen. Je nach
+Architektur nennt man diesen Modus auch \emph{Supervisor-Modus} oder allgemein auch
+\emph{privilegierten Modus}. Unter Linux nutzt nur der \emph{Kernel} (Betriebssystemkern) diesen
+Modus.
 
-    Unter Linux nutzt nur der \emph{Kernel} (Betriebssystemkern) diesen Modus.
-
-  \item[User-Mode] Arbeitet die CPU im User-Mode, so ist nur ein eingeschränkter Befehlssatz zur
-     Ausführung zugelassen. Es sind also nicht alle Befehle erlaubt, ebenso kann nicht auf alle Speicherbereiche und auch nicht direkt auf Hardware zugegriffen werden. 
-
-     In diesem Modus werden normale Programme ausgeführt, auch jene, die mit Administrator-Rechten 
-     laufen.
-\end{description}
+Arbeitet die CPU hingegen im \emph{User-Mode,} so ist nur ein eingeschränkter Befehlssatz zur
+Ausführung zugelassen. Es sind also nicht alle Befehle erlaubt, ebenso kann nicht auf alle
+Speicherbereiche und auch nicht direkt auf Hardware zugegriffen werden. In diesem Modus werden
+normale Programme ausgeführt, auch jene, die mit Administrator-Rechten laufen.
 
 \subsection{Systemaufrufe}
 
@@ -42,7 +37,8 @@ zusammenfassen:
     Verzeichnissen sowie Lesen und Schreiben von Daten. Abfragen und Ändern von Metadaten.
   \item \textbf{Prozessverwaltung:} Erzeugen und Terminieren von Prozessen sowie Abfrage deren 
    Status.
-  \item \textbf{Interprozesskommunikation (IPC):} Synchronisation und Kommunikation mit anderen Tasks, z.\,B. über Shared Memory, FIFOs oder Semaphoren.
+  \item \textbf{Interprozesskommunikation (IPC):} Synchronisation und Kommunikation mit anderen
+    Tasks, z.\,B. über Shared Memory, FIFOs oder Semaphoren.
   \item \textbf{Netzwerkkommunikation:} Senden und Empfangen von Daten über Netzwerke mit sog.
    \emph{Sockets,} normalerweise über TCP/IP aber auch über andere Protokolle wie Bluetooth.
   \item \textbf{Sonstiges:} Darüber hinaus gibt es noch eine Reihe von Systemaufrufen, die sich
@@ -117,7 +113,7 @@ und in der jeweiligen Manpage dokumentiert ist.
 
 Wichtig sind neben den Parameter auch die Rückgabewerte der Systemaufrufe. Der Rückgabewert ist
 immer eine Zahl. Positive Werte (inkl. der Null) stehen hierbei für das erfolgreiche Ausführen
-des Systemaufrufs, deren Bedeutung vom Systemauruf abhängt. So gibt -- wie eben schon erwähnt --
+des Systemaufrufs, deren Bedeutung vom Systemaufruf abhängt. So gibt -- wie eben schon erwähnt --
 der Auruf \texttt{read()} die Anzahl der gelesenen Zeichen zurück, 0 steht für das Dateiende. 
 
 Im Fehlerfall wird immer ein negativer Fehlercode zurückgegeben. Es gibt vom Betriebssystem ein 
@@ -126,7 +122,7 @@ paar hundert vordefinierte Fehlercodes, die gängigsten sind in
 Glücklicherweise kennt \strace{} die Fehlercodes und übersetzt sie in einen symbolischen Bezeichner
 und gibt dahinter auch die Bedeutung aus.
 
-\autoref{tab:errno} zeigt einige verbeitete Fehler"=Rückgabewerte mit dessen Bedeutung. Obwohl der
+\autoref{tab:errno} zeigt einige verbreitete Fehler"=Rückgabewerte mit dessen Bedeutung. Obwohl der
 numerische Wert hier aufgelistet wurde, hat er in der Praxis -- anders als etwa unter Windows --
 keine Bedeutung. Programme geben, von wenigen Ausnahmen abgesehen, nur den Fehlertext aus.
 
@@ -137,7 +133,7 @@ keine Bedeutung. Programme geben, von wenigen Ausnahmen abgesehen, nur den Fehle
     \multicolumn{2}{|l|}{\textbf{Fehlercode}}        & \textbf{Bedeutung} \\
     \hline
     -1      & \texttt{EPERM}     & Die Operation ist nicht erlaubt \\
-    -2      & \texttt{ENOENT}    & No such file or directory \\
+    -2      & \texttt{ENOENT}    & Datei oder Verzeichnis nicht gefunden \\
     -5      & \texttt{EIO}       & Eingabe-/Ausgabefehler \\
     -13     & \texttt{EACCES}    & Keine Berechtigung \\
     -20     & \texttt{ENOTDIR}   & Ist kein Verzeichnis \\
@@ -148,5 +144,3 @@ keine Bedeutung. Programme geben, von wenigen Ausnahmen abgesehen, nur den Fehle
   \caption{Auswahl häufiger Fehlercodes mit Bedeutung}
   \label{tab:errno}
 \end{table}
-
-\vspace{2cm}

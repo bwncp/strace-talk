@@ -15,15 +15,14 @@
 \usepackage{lipsum}
 \usepackage{awesomebox}
 
+
 \lstset{                   
        basicstyle=\footnotesize\ttfamily,
-       tabsize=4,                                    
+       tabsize=4,    
+       backgroundcolor = \color{Gainsboro},
        showstringspaces=false,
-       keywordstyle=\bfseries\color{blue!40!black},
-       commentstyle=\color {green!40!black},
        numberstyle=\scriptsize\ttfamily, %
        numbers=none,
-       frame=tb,
        breaklines=true,
        captionpos=b,
        breakindent=3pt,
@@ -53,10 +52,10 @@
       unixoiden Betriebssystemen. Es ist entweder bereits installiert oder lässt sich über die
       Paketverwaltung leicht installieren. Mit Hilfe von \strace{} lässt sich die Interaktion
       eines beliebigen Programms mit dem Betriebssystem untersuchen: Es zeigt die sogenannten
-      \emph{Systemaufrufe} mit ihren Argumente und Rückgabewerten an.
+      \emph{Systemaufrufe} mit ihren Argumenten und Rückgabewerten an.
 
       Dieser Vortrag ist für Einsteiger gedacht und beginnt daher mit etwas Theorie: Wie
-      interagieren Programme mit dem Betriebssystem? Danach wird die Bedienung von \strace{}
+      interagieren Programme mit dem Betriebssystem? Danach wird die Benutzung von \strace{}
       anhand eines einfachen Beispiels erläutert. Zum Schluss folgen verschiedene nützliche
       Optionen mit ihren Einsatzszenarien.
     \end{abstract}
@@ -79,8 +78,8 @@
      ISBN 3827373425 
    \bibitem{manstrace} Manpage
     \href{http://man7.org/linux/man-pages/man1/strace.1.html}{\emph{strace(1)}}
-   \bibitem{yama} Yama Linux Security Module, Kernel documentation
-     \url{https://www.kernel.org/doc/Documentation/security/Yama.txt}
+   \bibitem{yama} Yama Linux Security Module \\
+     \href{https://www.kernel.org/doc/Documentation/security/Yama.txt}{kernel.org/doc/Documentation/security/Yama.txt}
  \end{thebibliography}
 
 \end{document}
