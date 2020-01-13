@@ -1,0 +1,65 @@
+\section{Bereits laufende Prozesse}
+
+
+\begin{frame}
+  \frametitle{Laufende Prozesse}
+
+  \begin{itemize}
+    \item es können bereits laufende Prozesse verfolgt werden
+    \item Tracing erst ab dem aktuellen Zeitpunkt, nicht „rückwirkend“
+    \item Ermittlung der PID
+      \begin{itemize}
+        \item \texttt{pidof \emph{NAME}}
+        \item \texttt{ps aux | grep \emph{NAME}}
+      \end{itemize}
+    \item Aufruf von \strace{}
+      \begin{itemize}
+        \item \texttt{strace -p \emph{PID} [-f]}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Konfiguration der Berechtigungen}
+
+\begin{frame}[fragile]
+  \frametitle{Konfiguration der Berechtigungen}
+
+  \begin{block}{Wann ist \strace{} laufender Prozesse erlaubt?}
+    \begin{itemize}
+      \item Root darf alle Prozesse verfolgen
+      \item Benutzer darf eigene Prozesse verfolgen
+      \item Standardeinstellung vieler Linux-Distributionen verbietet letzteres
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Temporäres Freischalten}
+    \texttt{sysctl kernel.yama.ptrace\_scope=0}
+  \end{block}
+
+  \begin{exampleblock}{Dauerhafte Konfiguration: /etc/sysctl.d/10-trace.conf}
+    \texttt{kernel.yama.ptrace\_scope=0}
+  \end{exampleblock}
+
+\end{frame}
+
+\subsection{Zuordnung von Dateideskriptoren}
+
+\begin{frame}[fragile]
+  \frametitle{Zuordnung von Dateideskriptoren}
+
+  \begin{exampleblock}{\texttt{/proc/\emph{PID}/fd}}
+    \begin{lstlisting}
+lrwx------ 1 bw bw 64  2. Jan 16:35 0 -> /dev/pts/1
+lrwx------ 1 bw bw 64  2. Jan 16:35 1 -> /dev/pts/1
+lrwx------ 1 bw bw 64  2. Jan 16:35 2 -> /dev/pts/1
+lr-x------ 1 bw bw 64  2. Jan 16:35 3 -> /home/bw/devel/strace-talk/sample/somefile
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{block}{Automatische Zuordnung durch \strace{}}
+    \texttt{strace -y}
+  \end{block}
+
+\end{frame}

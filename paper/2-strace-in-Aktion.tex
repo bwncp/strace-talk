@@ -1,6 +1,6 @@
 \begin{figure*}[t]
   \centering
-  
+
   \includegraphics[scale=.8]{../images/sample-listing}
   \caption{Beispielhaftes Python-Programm (link) und dessen \strace-Ausgabe (rechts) \newline
   \emph{Anmerkung:} Die \strace-Ausgabe wurde um den relevanten Anteil gekürzt
@@ -15,68 +15,67 @@
 
 Genug der Theorie. In diesem Abschnitt wollen wir uns die Ausgabe von \strace{} anhand eines
 einfachen Beispiels ansehen. \autoref{fig:sample-listing} zeigt links ein kurzes Python-Skript.
-Python wurde deshalb gewählt, weil es auch ohne Spezialkenntnisse leicht vertändlich ist --
+Python wurde deshalb gewählt, weil es auch ohne Spezialkenntnisse leicht verständlich ist --
 deutlich einfacher als die Programmiersprache C.
 
 Ein Shellskript ist zur Darstellung von \strace{} ungeeignet, da es in der Regel sehr viele externe
-Programme aufruft, sog. \emph{Kindprozesse}. Gerade zu Beginn eines neu gestarteten Programmes 
+Programme aufruft, sog. \emph{Kindprozesse}. Gerade zu Beginn eines neu gestarteten Programmes
 werden jedoch viele Systemaufrufe durchgeführt (Laden von Bibliotheken, Übersetzungsdateien),
-die für Laien erstmal schwer verständlich sind. 
+die für Laien erstmal schwer verständlich sind.
 
 
 Auf der rechten Seite von \autoref{fig:sample-listing} wird die unveränderte Ausgabe von \strace{}
 dargestellt. Allerdings wurde nur der wesentliche Teil gelistet.
 
-Um das Beispiel nachvollziehen zu können, starten wir das Programm folgenermaßen in einer Shell:
+Um das Beispiel nachvollziehen zu können, starten wir das Programm folgendermaßen in einer Shell:
 
 \begin{lstlisting}
   % strace notfound.py > output.txt
 \end{lstlisting}
 
-Die Ausgabeumleitung in \texttt{output.txt} wird vorgenommen damit sich die Ausgabe vom Programm
-und von \strace{} nicht vermischen. Zunächst werden einige hundert Zeilen Output erzeugt die für
-uns irrelevant sind. Bevor der Python-Interpreter das Programm ausführt muss erstmal der
+Die Ausgabeumleitung in \texttt{output.txt} wird vorgenommen, damit sich die Ausgabe vom Programm
+und von \strace{} nicht vermischen. Zunächst werden einige hundert Zeilen Output erzeugt, die für
+uns irrelevant sind. Bevor der Python-Interpreter das Programm ausführt, muss erst eimal der
 Python-Interpreter initialisiert werden, müssen Bibliothken vom Betriebssystem geladen werden und
-muss das eigentliche Skript gelesen werden. Bei einem kompilierten C-Programm\footnote{oder
-natürlich auch einem Pascal- oder Go-Programm, also jeder Programmiersprache, die in ein
-Maschinenprogramm übersetzt wird} wäre dieser Anteil deutlich kürzer aber dennoch relativ groß.
+muss das eigentliche Skript gelesen werden. Bei einem kompilierten C-Programm wäre dieser Anteil deutlich kürzer aber dennoch relativ groß.
 
 Die Kunst besteht darin, den eigentlichen Start des Teils des Programms zu finden, der uns
 interessiert. Am besten liest man von unten nach oben. Oder man leitet die Ausgabe von \strace{}
 ein eine Datei um -- wie das geht erfahren wir im nächsten Kapitel -- und sucht im Texteditor nach
-einem bekannten String: Das kann eine (bekannte) Ausgabe sein oder den Namen der Datei, die
+einem bekannten String: Das kann eine (bekannte) Ausgabe sein oder der Namen der Datei, die
 geöffnet wird.
 
-Das Beispiel wurde so formatiert, dass die Zeilen des Programms und die korrespondierenden 
+Das Beispiel wurde so formatiert, dass die Zeilen des Programms und die korrespondierenden
 Systemaufrufe klar erkennbar sind. Dennoch nachfolgend ein paar Erklärungen.
 
-\begin{itemize}
-  \item Zunächst wird die Datei \texttt{somefile} zum Lesen geöffnet. Daraus resultiert
-    ein Systemaufruf \texttt{open()}. Der Python-Interpreter verwendet das etwas modernere
-    \texttt{openat()}, welches zusätzlich noch ermöglicht, anzugeben, wie relative Pfade
-    behandelt werden.
+Zunächst wird die Datei \texttt{somefile} zum Lesen geöffnet. Daraus resultiert ein Systemaufruf
+\texttt{open()}. Der Python-Interpreter verwendet das etwas modernere \texttt{openat()}, welches
+zusätzlich noch ermöglicht, anzugeben, wie relative Pfade behandelt werden.
 
-    Das Ergebnis ist der \emph{Dateideskriptor} mit der Nummer 3, der bei den folgenden
-    Systemaufrufen dann immer als erstes Argument angegeben wird. Dieser Dateideskriptor ist wichtig
-    um die Aufrufe den verschiedenen Dateien zuordnen zu können!
+Das Ergebnis ist der \emph{Dateideskriptor} mit der Nummer 3, der bei den folgenden Systemaufrufen
+dann immer als erstes Argument angegeben wird. Dieser Dateideskriptor ist wichtig um die Aufrufe
+den verschiedenen Dateien zuordnen zu können!
 
-    Anschließend werden Metainformationen zur Datei gelelesen, dafür wird \texttt{fstat()}
-    verwendet. Zur Metainformation gehören die Größe und Zugriffsrechte der Datei. Der Aufruf
-    \texttt{ioctl()} prüft, ob die Datei ein Terminal ist, \texttt{lseek()} setzt die Position
-    des Lesezeigers auf den Anfang\footnote{Im Prinzip sind diese Operationen für das Programm
-    gar nicht erforderlich. Das ist ein Problem der Abstraktion in der Informatik: Je "`einfacher"'
-    die Programmiersprache gehalten ist, je mehr automatisch passiert, deso schwieriger wird es,
-    das Verhalten des Systems auf unterster Ebene zu verstehen und deso mehr Dinge werden
-    erledigt, die gar nicht erledigt werden müssten.}.
+Anschließend werden Metainformationen zur Datei gelelesen, dafür wird \texttt{fstat()} verwendet.
+Zur Metainformation gehören die Größe und Zugriffsrechte der Datei. Der Aufruf \texttt{ioctl()}
+prüft, ob die Datei ein Terminal ist, \texttt{lseek()} setzt die Position des Lesezeigers auf den
+Anfang.
 
-  \item Nun werden mit \texttt{f.read()} maximal 5 Bytes gelesen. Der Python-Interpreter hingegen
-    puffert intern, versucht also einen ganzen Puffer von 4096 Bytes zu lesen und bekommt tatsächlich 6 Bytes. Dies ist der Rückgabewert des Systemaufrufs \texttt{read()}.
+\notebox{\sffamily
+      Im Prinzip sind diese Operationen für das Programm gar nicht erforderlich.
+      Das ist ein
+      Problem der Abstraktion in der Informatik: Je "`einfacher"' die Programmiersprache gehalten
+      ist, je mehr automatisch passiert, deso schwieriger wird es, das Verhalten des Systems auf
+      unterster Ebene zu verstehen und deso mehr Dinge werden erledigt, die gar nicht erledigt
+      werden müssten.}
 
-  \item \texttt{close()} gibt den Dateideskriptor 3 wieder frei.
+Nun werden mit \texttt{f.read()} maximal 5 Bytes gelesen. Der Python-Interpreter hingegen puffert
+intern, versucht also einen ganzen Puffer von 4096 Bytes zu lesen und bekommt tatsächlich 6 Bytes.
+Dies ist der Rückgabewert des Systemaufrufs \texttt{read()}.
 
-  \item \texttt{write()} schreibt die Meldung "`5 Bytes read"' auf die Standardausgabe. Gemäß
-    \autoref{tab:errno} ist der Dateideskriptor 1 die Standardausgabe.
-\end{itemize}
+\texttt{close()} gibt den Dateideskriptor 3 wieder frei. \texttt{write()} schreibt die Meldung "`5
+Bytes read"' auf die Standardausgabe. Gemäß \autoref{tab:errno} ist der Dateideskriptor 1 die
+Standardausgabe.
 
 \minisec{Fehlerfall}
 
@@ -90,7 +89,7 @@ openat(AT_FDCWD, "somefile", O_RDONLY|O_CLOEXEC) = -1 ENOENT (Datei oder Verzeic
 
 Hier ist klar erkennbar, dass die Datei nicht geöffnet wurde, weil die nicht exisistiert. Statt
 einem (positiven) Dateideskriptor gibt \texttt{openat()} den Fehlercode $-1$ zurück, der gemäß
-\href{http://man7.org/linux/man-pages/man3/errno.3.html}{\emph{errno(3)}} bzw. \autoref{tab:errno} 
+\href{http://man7.org/linux/man-pages/man3/errno.3.html}{\emph{errno(3)}} bzw. \autoref{tab:errno}
 „Datei oder Verzeichnis nicht gefunden“ bedeutet. Dieser Fehlertext ist praktischerweise in der
 Ausgabe von \strace{} auch gleich mit enthalten.
 
@@ -103,18 +102,25 @@ Python-Programm mit einer Ausnahme beendet.
 Haupt-Thread\footnote{Ein \emph{Thread} (von engl. \emph{thread} = „Faden“) ist ein
 Ausführungsstrang eines Programms. Mit Hilfe von Threads können Programme mehrere Dinge parallel
 erledigen ohne dass damit verschiedene, komplett getrennte Prozesse gestartet werden müssen. Somit
-können die Threads alle auf die gleichen Daten zugreifen.}. Aus Betriebssystemsicht (unter Linux)
-sind Threads und Kindprozesse\footnote{Vereinfacht gesagt: Wenn aus einem Programm ein anderes
-gestartet wird, nennt man den neu entstehenden Prozess \emph{Kindprozess.}} ziemlich ähnlich. Daher
-gibt es in \strace{} auch nur eine Option: Startet man \strace{} mit der Option \texttt{-f} (für
-\emph{follow),}) werden auch Kindprogramme und andere Threads beobachtet. Die Ausgabe wird jedoch
-schnell undübersichtlich -- wie man etwas Abhilfe schafft beschreibt \autoref{sec:fileoutput}.
+können die Threads alle auf die gleichen Daten zugreifen.}.
+
+Aus Betriebssystemsicht (unter Linux) sind Threads und Kindprozesse\footnote{Vereinfacht gesagt:
+Wenn aus einem Programm ein anderes gestartet wird, nennt man den neu entstehenden Prozess
+\emph{Kindprozess.}} ziemlich ähnlich, nämlich sog. \emph{Scheduling-Einheiten}. Trotzdem haben
+alle Threads innerhalb des gleichen Prozesses die gleiche Prozess-ID (PID), aber eine andere
+Thread-ID (TID). Leider verwendet \strace{} aus historischen Gründen die Terminologie "`PID"', meint
+aber eigentlich die TID.
+
+Aufgrund dieser Verwandtschaft von Threads und Prozessen gibt es in \strace{} auch nur eine Option:
+Startet man \strace{} mit der Option \texttt{-f} (für \emph{follow),} werden auch Kindprogramme und
+andere Threads beobachtet. Die Ausgabe wird jedoch schnell unübersichtlich -- wie man etwas Abhilfe
+schafft beschreibt \autoref{sec:fileoutput}.
 
 Um die Programme unterscheiden zu können beginnt jede Trace-Zeile eines Kindprozesses mit
-\texttt{[pid XXXX]}, wobei \texttt{XXXX} für die jeweilige Prozess-ID steht enthält.
+\texttt{[pid XXXX]}, wobei \texttt{XXXX} für die jeweilige Prozess-ID bzw. Thread-ID steht.
 
 
-\subsection{Protokollierung in einer Datei}
+\subsection{Protokollierung in eine Datei}
 \label{sec:fileoutput}
 
 Wie wir in \autoref{sec:fileoutput} gesehen haben, wird die Ausgabe von \strace{} mit der des
@@ -130,7 +136,7 @@ das Lesen übersichtlicher. Um die Systemaufrufe auch zeitlich einordnen zu kön
 mit \texttt{-tt} auch in der Genauigkeit von Millisekunden. Die Protokollierung von Zeitstempeln
 ist unabhängig davon, ob die Ausgabe in eine Datei umgeleitet wird oder nicht.
 
-\subsection{\strace{} einschränken}
+\subsection{Filterfunktionen}
 
 Die vorhergehenden Abschnitte haben durch neue Optionen die Ausgabe immer noch angereichert, was
 zwar nützlich ist, aber das Ganze nicht unbedingt übersichtlicher macht. In diesem Abschnitt wollen
@@ -183,7 +189,7 @@ Deshalb gibt es vordefinierte Gruppen, nämlich \texttt{\%file} für Dateioperat
   \label{tab:strace_groups}
 \end{table}
 
-Ein Beispiel: \autoref{fig:fileonly} zeigt die \emph{vollständige} Ausgabe von \texttt{strace -e 
+Ein Beispiel: \autoref{fig:fileonly} zeigt die \emph{vollständige} Ausgabe von \texttt{strace -e
 trace=\%file ls}. Ohne diese Einschränkung wäre das Listing 66 Zeilen lang! Zunächst werden
 die Biblitoheken und Übersetzungsdateien geladen, anschließend wird in Zeile 9 dann der
 Dateideskriptor für das aktuelle Arbeitsverzeichnis geöffnet. Zeile 10 und 11 sind bereits
