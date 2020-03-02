@@ -142,6 +142,8 @@ Die vorhergehenden Abschnitte haben durch neue Optionen die Ausgabe immer noch a
 zwar nützlich ist, aber das Ganze nicht unbedingt übersichtlicher macht. In diesem Abschnitt wollen
 wir den Output etwas einschränken.
 
+\subsubsection{Filtern nach Systemaufrufen}
+
 Meistens interessiert man sich nicht für das Verhalten des Programms als Ganzes sondern für einen
 bestimmten Teilaspekt. So könnte uns beispielsweise interessieren, warum eine Datei nicht geöffnet
 werden kann. Relevant ist also eigentlich nur der \texttt{open}-Systemaufruf.
@@ -198,6 +200,16 @@ die eigentliche Ausgabe des Programms.
 Es gibt noch wesentlich mehr Möglichkeiten der Filterung, die in der Manpage
 \href{http://man7.org/linux/man-pages/man1/strace.1.html#OPTIONS}{\emph{strace(1)}} im Abschnitt
 „Options“ und weiter unter „Filtering“ detailliert beschrieben werden.
+
+\subsubsection{Filtern nach (Mis-)Erfolg}
+
+Manchmal interessiert man sich auch nur für fehlgeschlagene Systemaufrufe. Mit der Option
+\texttt{-z} werden nur erfolgreiche Aufrufe angezeigt, mit \texttt{-Z} nur fehlgeschlagene.
+Allerdings muss man etwas aufpassen: Nicht jeder fehlgeschlagene Aufruf stellt tatsächlich einen
+Fehler im Programmablauf dar. Sucht man beispielsweise nach einer Datei in einer Verzeichnisliste,
+so ist es sinnvoller, so lange \texttt{open()} aufzurufen, bis der Aufruf erfolgreich ist
+anstatt in irgendwelchen Verzeichnislistings nach der Datei zu suchen.
+
 
 \subsection{Strings}
 
